@@ -1,0 +1,14 @@
+services:
+  backend:
+    image: fmr-backend:latest
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "/your/folder/here:/data"
+    environment:
+      SECRET_KEY: "django-insecure-39yrg+3$9&*%o7nohp@ruihd)d_t%-jdmb_h)@8he*u=43z!hh"
+      #PRE_CALC_JSON_PATH: "/data/Audio_jsons"
+      #PRE_CALC_AUDIO_PATH: "/data/Audio"
+      #PRE_CALC_ALBUM_ART_PATH: "/data/Album_Art"
+      #FRONTEND_URL: "http://127.0.0.1:3000,http://localhost:3000,http://frontend:3000"
