@@ -68,7 +68,7 @@ To build the docker container from the source code, you have to:
    ```shell
    docker compose build backend
    ```
-4. Run the containers
+4. Run the container
    ```shell
    docker compose up
    # If you don't want terminal output, you can run the command detached by adding the option -d
