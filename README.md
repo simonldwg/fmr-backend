@@ -147,3 +147,13 @@ python manage.py add_pre_calculated_songs
 
 ## API Documentation
 While the backend is running, the documentation for the different API endpoints is available at `/docs`.
+
+## Statistics
+To export statistics about your current song library to an Excel file, you can use the following command:
+
+```shell
+python manage.py export_library_stats_to_excel
+```
+
+Use the `--help` flag to show the different arguments of the command. The default filename of the generated workbook is
+`song_stats.xlsx`.

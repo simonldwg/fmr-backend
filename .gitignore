@@ -162,7 +162,5 @@ local/
 audio_process-main/
 .vscode/
 
-# Frontend / NodeJS / React-Router
-frontend/node_modules/
-frontend/.react-router/
-frontend/.vite/
+# Ingore statistics
+song_stats.xlsx
