@@ -43,7 +43,7 @@ class SongGenresSchema(Schema):
 class SongSchema(Schema):
     id: UUID
     title: str
-    album: Optional[AlbumSchema] = None
+    album: AlbumSchema
     artist: str
     duration_s: float
     features: SongFeaturesSchema
@@ -54,7 +54,7 @@ class SongSchema(Schema):
 
 class SongCreateSchema(Schema):
     title: str
-    album_id: Optional[Union[UUID, str]] = None
+    album_id: Union[UUID, str]
     artist: str
 
 

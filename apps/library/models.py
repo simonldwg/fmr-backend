@@ -70,9 +70,7 @@ class Song(models.Model):
     album = models.ForeignKey(
         Album,
         on_delete=models.CASCADE,
-        related_name="songs",
-        null=True,
-        blank=True,
+        related_name="songs"
     )
     audio_file = models.FileField(upload_to="Audio/")
 

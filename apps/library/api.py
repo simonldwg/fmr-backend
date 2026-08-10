@@ -71,10 +71,7 @@ def create_and_upload_song(
     song: SongCreateSchema = Form(...),
     audio_file: UploadedFile = File(...),
 ):
-    if song.album_id:
-        album = Album.objects.get(id=song.album_id)
-    else:
-        album = None
+    album = Album.objects.get(id=song.album_id)
 
     genres, features, duration_s = calculate_genres_and_features(audio_file)
 
