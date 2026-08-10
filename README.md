@@ -25,8 +25,9 @@ backend is solely used for managing the music library (e.g. adding/deleting song
 generic music features. Therefore, this backend could also be used in other contexts, not just in the fitness domain.
 
 This backend is intended as a prototype / proof-of-concept and has **zero security measures,** not even a basic 
-authentication and authorization system. Using this backend in any production environment without prior modification is 
-highly discouraged.
+authentication and authorization system. By default, any host can access this backend, unless the port is blocked by a 
+third-party firewall. Also, anyone can access the stored media files. Using this backend in any production environment 
+without prior modification is therefore highly discouraged.
 
 ---
 
