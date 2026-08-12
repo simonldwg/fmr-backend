@@ -20,9 +20,9 @@ albums_router = Router(tags=["albums"])
 @albums_router.post("/", response=AlbumSchema)
 def create_album(
     request,
-    album_name: str,
-    artist: str,
-    artwork_file: Optional[UploadedFile] = None
+    album_name: str = Form(...),
+    artist: str = Form(...),
+    artwork_file: Optional[UploadedFile] = File(None),
 ):
     if artwork_file and not artwork_file.name.endswith((".jpg", ".jpeg", ".png")):
         raise ValidationError("Unsupported file format. Please upload an image file.")
