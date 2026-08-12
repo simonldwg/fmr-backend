@@ -23,7 +23,6 @@ def create_album(
     album_name: str,
     artist: str,
     artwork_file: Optional[UploadedFile] = None
-
 ):
     if artwork_file and not artwork_file.name.endswith((".jpg", ".jpeg", ".png")):
         raise ValidationError("Unsupported file format. Please upload an image file.")
@@ -65,7 +64,7 @@ def delete_album(request, album_id: UUID):
     return {"deleted": True}
 
 
-@songs_router.post("/")
+@songs_router.post("/", response=SongSchema)
 def create_and_upload_song(
     request,
     song: SongCreateSchema = Form(...),
