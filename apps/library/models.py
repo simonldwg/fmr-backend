@@ -82,10 +82,3 @@ class Song(models.Model):
         if self.audio_file:
             return self.audio_file.url
         return None
-
-    @property
-    def artwork_url(self):
-        if self.album:
-            return self.album.artwork_url
-        return None
-

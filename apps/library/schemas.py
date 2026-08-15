@@ -49,7 +49,6 @@ class SongSchema(Schema):
     features: SongFeaturesSchema
     genres: SongGenresSchema
     song_url: Optional[str]
-    artwork_url: Optional[str]
 
 
 class SongCreateSchema(Schema):
