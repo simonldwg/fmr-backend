@@ -152,14 +152,17 @@ MIN_PLAYLIST_LENGTH = os.getenv("MIN_PLAYLIST_LENGTH")
 if not MIN_PLAYLIST_LENGTH:
     _logger.warning("MIN_PLAYLIST_LENGTH environment variable not set, defaulting to 3")
     MIN_PLAYLIST_LENGTH = 3
+MIN_PLAYLIST_LENGTH = int(MIN_PLAYLIST_LENGTH)
 
 MAX_PLAYLIST_LENGTH = os.getenv("MAX_PLAYLIST_LENGTH")
 if not MAX_PLAYLIST_LENGTH:
     _logger.warning("MAX_PLAYLIST_LENGTH environment variable not set, defaulting to 20")
     MAX_PLAYLIST_LENGTH = 20
+MAX_PLAYLIST_LENGTH = int(MAX_PLAYLIST_LENGTH)
 
 DEFAULT_PLAYLIST_LENGTH = os.getenv("DEFAULT_PLAYLIST_LENGTH")
 if not DEFAULT_PLAYLIST_LENGTH:
     _logger.warning("DEFAULT_PLAYLIST_LENGTH environment variable not set, defaulting to 10")
     DEFAULT_PLAYLIST_LENGTH = 10
+DEFAULT_PLAYLIST_LENGTH = int(DEFAULT_PLAYLIST_LENGTH)
 
