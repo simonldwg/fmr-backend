@@ -107,75 +107,25 @@ def k_d_tree(
     numClosestNeighbours: int,
 ) -> List[str]:
     """
-    takes as input the id, dimensions and length of Playlist, returns the song ids of the closest neighbours
-    :param data: List containing song IDs and their dimensions.
+    Takes as input the ids and dimensions of all candidate songs plus a query
+    vector, returns the song ids of the closest neighbours, sorted by distance.
+    :param data: Tuple containing song IDs and their dimensions.
     :param features: Input vector for the query.
     :param numClosestNeighbours: Number of closest neighbours to find.
     :return: List of song IDs of the closest neighbours.
     """
-    # knearest extrahiert die doppelte größe der eigentlichen playlist, um später doppelte artists entfernen zu können
-    # data = [[songAdresse1, songAdresse2, ...], [[InputVector], [5DimVektor], [5DimVektor2], ...]]
+    ids, dimensions = data
 
-    features = list(features.model_dump(exclude_none=True).values())
+    if not ids or numClosestNeighbours <= 0:
+        return []
 
-    data[1].insert(0, features)
-    songList = []
+    query_vector = list(features.model_dump(exclude_none=True).values())
 
-    # ensure number of requested library is as big as the actual song list
-    if numClosestNeighbours > len(data[0]):
-        numClosestNeighbours = len(data[0])
+    # never request more neighbours than there are songs
+    k = min(numClosestNeighbours, len(ids))
 
-    tree = KDTree(data[1], leaf_size=3)
-    dist, ind = tree.query(data[1][:1], k=numClosestNeighbours + 1)
-    ind = np.array(ind).flatten().tolist()
+    # we don't have to include the query vector in the tree itself as it is not a real data point
+    tree = KDTree(dimensions, leaf_size=3)
+    _, ind = tree.query([query_vector], k=k)
 
-    # erase query point (is always 0th element in data array) queryPoint = InputVector
-    for i, val in enumerate(ind):
-        if val == 0:
-            del ind[i]
-            if len(ind) == 0:
-                break
-
-        # subtract array index and get the Songadress (subtract because inputVector is deleted)
-        ind[i] = ind[i] - 1
-        songList.append(data[0][ind[i]])
-
-    return songList
-
-
-def annoy(
-    song_id_dimensions: Tuple[List[str], List[List[float]]],
-    inputVector: List[float],
-    numClosestNeighbours: int,
-) -> List[str]:
-    """
-    Takes as input the id, dimensions and length of Playlist, returns the song ids of the closest neighbours
-    :param song_id_dimensions: List containing song IDs and their dimensions.
-    :param inputVector: Input vector for the query.
-    :param numClosestNeighbours: Number of closest neighbours to find.
-    :return: List of song IDs of the closest neighbours.
-    """
-
-    ids = song_id_dimensions[0]
-    dimensions = song_id_dimensions[1]
-
-    dimensions.insert(0, inputVector)
-    songList = []
-
-    dimension_length = len(dimensions[0])  # Length of item vector that will be indexed
-    annoy = AnnoyIndex(dimension_length, "euclidean")
-    for i, val in enumerate(dimensions):
-        annoy.add_item(i, val)
-
-    annoy.build(40)  # 10 trees
-    ind = annoy.get_nns_by_item(0, numClosestNeighbours)
-
-    # erase query point (is always 0th element in data array) queryPoint = InputVector
-    for i, val in enumerate(ind):
-        if val == 0:
-            del ind[i]
-        # subtract array index and get the Songadress (subtract because inputVector is deleted)
-        ind[i] = ind[i] - 1
-        songList.append(ids[ind[i]])
-
-    return songList
+    return [ids[int(i)] for i in ind[0]]
