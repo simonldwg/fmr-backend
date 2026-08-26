@@ -1,7 +1,5 @@
 from typing import List, Tuple, Optional
 
-import numpy as np
-from annoy import AnnoyIndex
 from sklearn.neighbors import KDTree
 
 from apps.library.models import Song
