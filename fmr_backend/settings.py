@@ -138,6 +138,26 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# LOGGING
+LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.DEBUG)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": LOG_LEVEL,
+        },
+    },
+    "loggers": {
+        # Send everything to console
+        "": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+        },
+    },
+}
+
 
 # This is only necessary if the API is used with a web frontend, as CORS is not a problem with native clients
 CORS_ALLOWED_ORIGINS = [url.strip() for url in os.getenv("FRONTEND_URL", "").split(",") if url.strip()]
