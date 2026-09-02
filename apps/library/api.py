@@ -48,7 +48,7 @@ def list_albums(request, album_name: Optional[str] = None):
 
 @albums_router.get("/all", response=List[AlbumSchema])
 def list_all_albums(request):
-    return Album.objects.all()
+    return Album.objects.all().order_by("album_name")
 
 
 @albums_router.get("/{album_id}", response=AlbumDetailSchema)
@@ -98,7 +98,7 @@ def list_songs(request, title: Optional[str] = None):
 
 @songs_router.get("/all", response=List[SongSchema])
 def list_all_songs(request):
-    return Song.objects.all()
+    return Song.objects.all().order_by("title")
 
 
 @songs_router.get("/{song_id}", response=SongSchema)
