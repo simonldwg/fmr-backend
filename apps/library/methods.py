@@ -5,7 +5,7 @@ from typing import Tuple, Union
 from uuid import UUID
 
 from django.core.files import File
-from ninja.files import UploadedFile
+from django.core.files.uploadedfile import UploadedFile
 
 from .models import Album, Song, SongFeatures, SongGenres
 from .schemas import SongFeaturesSchema, SongGenresSchema
