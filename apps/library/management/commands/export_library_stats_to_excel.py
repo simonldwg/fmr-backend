@@ -1,6 +1,5 @@
 """
-Django management command: Exports statistics about the music library
-as an Excel file (.xlsx).
+Exports statistics about the music library as an Excel file (.xlsx).
 
 Usage:
     python manage.py export_stats
@@ -10,6 +9,8 @@ Usage:
 from collections import Counter
 
 from django.core.management.base import BaseCommand
+from django.db.models import QuerySet
+from django.db.models.functions import Lower
 from openpyxl import Workbook
 from openpyxl.chart import BarChart, Reference
 from openpyxl.styles import Font
@@ -45,7 +46,7 @@ class Command(BaseCommand):
         bins_arousal = options["bins_arousal"]
         bins_bpm = options["bins_bpm"]
 
-        songs = Song.objects.select_related("features", "genres")
+        songs = Song.objects.select_related("features", "genres").order_by(Lower("title"))
         total = songs.count()
         if total == 0:
             self.stdout.write(self.style.WARNING("No songs in the database."))
@@ -107,6 +108,8 @@ class Command(BaseCommand):
             total=total,
             chart_title="Ten most frequent artists",
         )
+
+        self._write_song_sheet(wb, songs)
 
         wb.save(output_path)
         self.stdout.write(
@@ -184,6 +187,25 @@ class Command(BaseCommand):
         self._add_bar_chart(
             ws, f"{value_label} distribution", n_rows=len(bins), anchor="E9"
         )
+
+    def _write_song_sheet(self, wb: Workbook, songs: QuerySet[Song]):
+        ws = wb.create_sheet("Song list")
+        ws.append([
+            "ID", "Title", "Artist", "Album", "Duration (seconds)", "Valence", "Arousal", "Authenticity", "Timeliness",
+            "Complexity", "Danceability", "Tonal", "Voice", "BPM", "Top 3 Genres", "All Genres"
+        ])
+
+        for song in songs:
+            top3_genres: str = ',\n'.join(f'{genre} ({value})' for genre, value in song.genres.top3_genres.items())
+            all_genres: str = ',\n'.join(f'{genre} ({value})' for genre, value in song.genres.all_genres.items())
+
+            ws.append([
+                str(song.id), song.title, song.artist, song.album.album_name, song.duration_s, song.features.valence,
+                song.features.arousal, song.features.authenticity, song.features.timeliness, song.features.complexity,
+                song.features.danceability, song.features.tonal, song.features.voice, song.features.bpm, top3_genres,
+                all_genres
+            ])
+        self._autosize(ws)
 
     @staticmethod
     def _add_bar_chart(ws, title, n_rows, anchor):
