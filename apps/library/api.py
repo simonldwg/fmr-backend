@@ -1,9 +1,10 @@
 from typing import List, Optional
 from uuid import UUID
 
+from django.core.exceptions import ValidationError
+from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from ninja import File, Form, Router
-from ninja.errors import ValidationError
 from ninja.files import UploadedFile
 from ninja.pagination import PageNumberPagination, paginate
 
@@ -42,13 +43,13 @@ def list_albums(request, album_name: Optional[str] = None):
     qs = Album.objects.all()
     if album_name:
         qs = qs.filter(album_name__icontains=album_name)
-    qs = qs.order_by("album_name")
+    qs = qs.order_by(Lower("album_name"))
     return qs
 
 
 @albums_router.get("/all", response=List[AlbumSchema])
 def list_all_albums(request):
-    return Album.objects.all().order_by("album_name")
+    return Album.objects.all().order_by(Lower("album_name"))
 
 
 @albums_router.get("/{album_id}", response=AlbumDetailSchema)
@@ -92,13 +93,13 @@ def list_songs(request, title: Optional[str] = None):
     qs = Song.objects.all()
     if title:
         qs = qs.filter(title__icontains=title)
-    qs = qs.order_by("title")
+    qs = qs.order_by(Lower("title"))
     return qs
 
 
 @songs_router.get("/all", response=List[SongSchema])
 def list_all_songs(request):
-    return Song.objects.all().order_by("title")
+    return Song.objects.all().order_by(Lower("title"))
 
 
 @songs_router.get("/{song_id}", response=SongSchema)
