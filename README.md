@@ -5,6 +5,8 @@ The Fitness Music Recommender monitors your heart rate and selects a suitable so
 The app was developed as part of my bachelor's thesis at the 
 [University of Applied Sciences Düsseldorf](https://www.hs-duesseldorf.de/).
 
+<img src="https://github.com/simonldwg/fmr-phone/blob/471e476a87e5edbb8c34f1d8985af7a291b9bca4/Screenshot_20261006-175859.png" alt="app screenshot" width="250">
+
 ---
 
 This repository contains the source code for the backend REST API. The API uses Django and Django Ninja as the base
