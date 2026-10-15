@@ -160,3 +160,10 @@ python manage.py export_library_stats_to_excel
 
 Use the `--help` flag to show the different arguments of the command. The default filename of the generated workbook is
 `song_stats.xlsx`.
+
+---
+
+### Other repos of this project
+* [Smartphone app](https://github.com/simonldwg/fmr-phone)
+* [Wear OS app](https://github.com/simonldwg/fmr-wearos)
+* [FMRAndroidCore library](https://github.com/simonldwg/fmr-android-core)
